@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine?</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fecfef);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+    position: relative;
+}
+
+h1 {
+    margin-bottom: 25px;
+    color: #e63946;
+}
+
+button {
+    padding: 14px 28px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+button:hover {
+    transform: scale(1.08);
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+    margin-right: 15px;
+}
+
+#noBtn {
+    background: #adb5bd;
+    color: white;
+    position: absolute;
+}
+
+#result {
+    margin-top: 25px;
+    font-size: 22px;
+    color: #d90429;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+    <h1>Will you be my Valentine?</h1>
+    
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const card = document.getElementById("card");
+
+let yesScale = 1;
+
+
+function moveNoButton() {
+    const cardRect = card.getBoundingClientRect();
+
+    const maxX = cardRect.width - noBtn.offsetWidth;
+    const maxY = cardRect.height - noBtn.offsetHeight;
+
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+
+    // Grow YES button each time
+    yesScale += 0.15;
+    yesBtn.style.transform = `scale(${yesScale})`;
+}
+
+// Initial placement
+noBtn.style.left = "140px";
+noBtn.style.top = "90px";
+
+noBtn.addEventListener("mouseenter", moveNoButton);
+
+document.getElementById("yesBtn").onclick = () => {
+    document.getElementById("result").innerHTML =
+        "You stuck with me now :3";
+    yesBtn.style.transform = `scale(1)`;
+};
+</script>
+
+</body>
+</html>
