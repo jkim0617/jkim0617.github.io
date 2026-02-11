@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Be My Valentine?</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 
 
 <style>
@@ -106,6 +108,19 @@ button {
     50% { transform: translateY(-8px); }
     100% { transform: translateY(0px); }
 }
+
+.card {
+    width: 90%;
+    max-width: 420px;
+}
+
+@media (max-width: 480px) {
+    .buttonRow {
+        flex-direction: column;
+        gap: 14px;
+    }
+}
+
 </style>
 </head>
 
@@ -156,11 +171,14 @@ function dodgeNoButton() {
     noBtn.style.top = newY + "px";
 
     // Grow YES button each hover
-    yesScale += 0.15;
+    yesScale = Math.min(yesScale + 0.15, 2.5);
+
     yesBtn.style.transform = `scale(${yesScale})`;
 }
 
 noBtn.addEventListener("mouseenter", dodgeNoButton);
+noBtn.addEventListener("touchstart", dodgeNoButton);
+
 
 yesBtn.onclick = () => {
     buttonRow.style.display = "none";
