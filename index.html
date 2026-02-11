@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Be My Valentine?</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
 
 <style>
-body {
+/* body {
     margin: 0;
     height: 100vh;
     background: linear-gradient(135deg, #ff9a9e, #fecfef);
@@ -14,45 +16,75 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+} */
+
+body {
+    margin: 0;
+    height: 100vh;
+    /* font-family: Arial, sans-serif; */
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    background-color: #ff9a9e;
+    background-image:
+        url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>\<text x='40' y='100' font-size='40' opacity='0.12'>❤</text>\</svg>"),
+        linear-gradient(135deg, #ff9a9e, #fecfef);
+
+background-repeat: repeat, no-repeat;
+background-size: 160px 160px, cover;
 }
 
 .card {
     background: white;
-    padding: 40px;
+    padding: 40px 50px 70px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     text-align: center;
     position: relative;
 }
 
-h1 {
-    margin-bottom: 25px;
+/* h1 {
+    margin-bottom: 30px;
     color: #e63946;
+} */
+
+h1 {
+    margin-bottom: 30px;
+    color: #e63946;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.buttonRow {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 button {
+
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+
     padding: 14px 28px;
     font-size: 18px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    transition: transform 0.15s ease;
-}
-
-button:hover {
-    transform: scale(1.08);
+    transition: transform 0.2s ease;
 }
 
 #yesBtn {
     background: #ff4d6d;
     color: white;
-    margin-right: 15px;
 }
 
 #noBtn {
     background: #adb5bd;
     color: white;
-    position: absolute;
 }
 
 #result {
@@ -61,32 +93,61 @@ button:hover {
     color: #d90429;
     font-weight: bold;
 }
+
+#penguin {
+    width: 200px;
+    display: block;
+    margin: 0 auto 0;
+    animation: floaty 2.5s ease-in-out infinite;
+}
+
+@keyframes floaty {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
 </style>
 </head>
 
 <body>
 
 <div class="card" id="card">
+    <img src="https://media1.tenor.com/m/6kwrvXo8NDsAAAAC/happy-valentines-day-pudgy-penguins.gif" id="penguin" alt="Cute Penguin">
     <h1>Will you be my Valentine?</h1>
-    
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
+    <div class="buttonRow" id="buttonRow">
+        <button id="yesBtn">Yeth</button>
+        <button id="noBtn">Noh</button>
+    </div>
 
     <div id="result"></div>
 </div>
 
 <script>
 const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
 const card = document.getElementById("card");
+const buttonRow = document.getElementById("buttonRow");
 
 let yesScale = 1;
+let escaped = false;
 
-
-function moveNoButton() {
+function dodgeNoButton() {
     const cardRect = card.getBoundingClientRect();
 
-    const maxX = cardRect.width - noBtn.offsetWidth;
-    const maxY = cardRect.height - noBtn.offsetHeight;
+    // On first dodge, switch to absolute positioning
+    if (!escaped) {
+        const btnRect = noBtn.getBoundingClientRect();
+        const cardRect = card.getBoundingClientRect();
+
+        noBtn.style.position = "absolute";
+        noBtn.style.left = (btnRect.left - cardRect.left) + "px";
+        noBtn.style.top = (btnRect.top - cardRect.top) + "px";
+
+        escaped = true;
+    }
+
+    const maxX = card.offsetWidth - noBtn.offsetWidth;
+    const maxY = card.offsetHeight - noBtn.offsetHeight;
 
     const newX = Math.random() * maxX;
     const newY = Math.random() * maxY;
@@ -94,18 +155,15 @@ function moveNoButton() {
     noBtn.style.left = newX + "px";
     noBtn.style.top = newY + "px";
 
-    // Grow YES button each time
+    // Grow YES button each hover
     yesScale += 0.15;
     yesBtn.style.transform = `scale(${yesScale})`;
 }
 
-// Initial placement
-noBtn.style.left = "140px";
-noBtn.style.top = "90px";
+noBtn.addEventListener("mouseenter", dodgeNoButton);
 
-noBtn.addEventListener("mouseenter", moveNoButton);
-
-document.getElementById("yesBtn").onclick = () => {
+yesBtn.onclick = () => {
+    buttonRow.style.display = "none";
     document.getElementById("result").innerHTML =
         "You stuck with me now :3";
     yesBtn.style.transform = `scale(1)`;
